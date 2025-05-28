@@ -104,3 +104,7 @@ class WodExerciseSchema(BaseModel):
 class WodResponseSchema(BaseModel):
     exercises: List[WodExerciseSchema]
     generated_at: datetime
+class ExerciseHistorySchema(BaseModel):
+    id: int
+    exercise_id: int
+    performed_at: datetime

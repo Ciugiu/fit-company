@@ -1,7 +1,8 @@
-from sqlalchemy import Column, String, Float, Integer, Boolean, ForeignKey, Table, Text
+from sqlalchemy import Column, String, Float, Integer, Boolean, ForeignKey, Table, Text, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from .database import Base
+import datetime
 
 class UserModel(Base):
     __tablename__ = "users"
@@ -16,6 +17,8 @@ class UserModel(Base):
     height = Column(Float, nullable=True)
     fitness_goal = Column(String, nullable=True)
     onboarded = Column(String, default="false", nullable=False)
+
+    exercise_history = relationship("ExerciseHistoryModel", back_populates="user")
 
     def __repr__(self):
         return f"<User(email='{self.email}', name='{self.name}', role='{self.role}')>"
@@ -65,4 +68,13 @@ class ExerciseModel(Base):
     )
 
     def __repr__(self):
-        return f"<Exercise(id={self.id}, name='{self.name}', difficulty={self.difficulty})>" 
+        return f"<Exercise(id={self.id}, name='{self.name}', difficulty={self.difficulty})>"
+class ExerciseHistoryModel(Base):
+    __tablename__ = "exercise_history"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(String, ForeignKey("users.email"), nullable=False)  # <-- Fix here
+    exercise_id = Column(Integer, ForeignKey("exercises.id"), nullable=False)
+    performed_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    user = relationship("UserModel", back_populates="exercise_history")
+    exercise = relationship("ExerciseModel")

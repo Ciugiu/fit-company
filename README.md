@@ -10,6 +10,12 @@ Start the database with docker compose
 docker compose up -d
 ```
 
+Install the requirments
+
+```sh
+pip install -r requirements.txt
+```
+
 Run the projet
 
 ```bash

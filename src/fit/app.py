@@ -12,6 +12,8 @@ from .services.fitness_service import (
     get_all_exercises, get_exercise_by_id, get_exercises_by_muscle_group
 )
 from .services.fitness_coach_service import calculate_intensity, request_wod
+from .services.fitness_service import get_exercise_history
+
 import datetime
 import os
 import random
@@ -234,6 +236,16 @@ def get_wod():
         
     except Exception as e:
         return jsonify({"error": "Error generating workout of the day", "details": str(e)}), 500
+
+@app.route("/fitness/exercise-history", methods=["GET"])
+@jwt_required
+def exercise_history():
+    try:
+        user_email = g.user_email
+        history = get_exercise_history(user_email)
+        return jsonify(history), 200
+    except Exception as e:
+        return jsonify({"error": "Error retrieving exercise history", "details": str(e)}), 500
 
 def run_app():
     """Entry point for the application script"""
