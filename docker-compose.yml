@@ -17,6 +17,24 @@ services:
       retries: 5
     networks:
       - fit
+  monolith:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - COACH_URL=http://coach:5000
+    networks:
+      - fit
+  coach:
+    build: ./coach_service
+    ports:
+      - "5001:5000"
+    environment:
+      - MONOLITH_URL=http://monolith:5000
+    depends_on:
+      - monolith
+    networks:
+      - fit
 
 networks:
   fit:
