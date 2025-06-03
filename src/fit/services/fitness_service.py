@@ -2,6 +2,7 @@ from ..database import db_session
 from ..models_db import MuscleGroupModel, ExerciseModel, exercise_muscle_groups, ExerciseHistoryModel, UserModel
 from ..models_dto import MuscleGroup, Exercise, MuscleGroupWithPrimary
 from sqlalchemy import select, join
+import datetime
 
 def get_all_muscle_groups():
     """
@@ -222,5 +223,29 @@ def get_exercise_history(user_email: str):
             }
             for h in history
         ]
+    finally:
+        db.close()
+
+def get_yesterdays_exercise_ids(user_email: str):
+    db = db_session()
+    try:
+        user = db.query(UserModel).filter(UserModel.email == user_email).first()
+        if not user:
+            return []
+        # Calculate yesterday's date range
+        today = datetime.datetime.utcnow().date()
+        yesterday = today - datetime.timedelta(days=1)
+        start = datetime.datetime.combine(yesterday, datetime.time.min)
+        end = datetime.datetime.combine(yesterday, datetime.time.max)
+        history = (
+            db.query(ExerciseHistoryModel)
+            .filter(
+                ExerciseHistoryModel.user_id == user.email,
+                ExerciseHistoryModel.performed_at >= start,
+                ExerciseHistoryModel.performed_at <= end,
+            )
+            .all()
+        )
+        return [h.exercise_id for h in history]
     finally:
         db.close()

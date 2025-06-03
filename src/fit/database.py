@@ -1,9 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Database connection settings from docker-compose.yml
-SQLALCHEMY_DATABASE_URL = "postgresql://root:example@192.168.1.101:5432/fit"
+SQLALCHEMY_DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL")
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

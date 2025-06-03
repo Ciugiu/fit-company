@@ -11,3 +11,4 @@ wheels/
 
 todo.md
 private/
+.env

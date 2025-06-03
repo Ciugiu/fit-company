@@ -3,16 +3,16 @@ import { check, sleep } from 'k6';
 
 export let options = {
   stages: [
-    { duration: '30s', target: 10 },
-    { duration: '1m', target: 10 },
-    { duration: '30s', target: 20 },
-    { duration: '1m', target: 20 },
+    { duration: '30s', target: 50 },
+    { duration: '1m', target: 50 },
+    { duration: '30s', target: 100 },
+    { duration: '1m', target: 100 },
     { duration: '30s', target: 0 },
   ],
 };
 
 const BASE_URL = 'http://localhost:5000';
-const JWT_TOKEN = 'YOUR_JWT_TOKEN';
+const JWT_TOKEN = import.meta.env.JWT_TOKEN;
 
 
 
