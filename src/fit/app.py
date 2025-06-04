@@ -6,12 +6,11 @@ from .models_dto import UserSchema
 from .database import init_db, db_session
 from .models_db import UserModel
 from .services.user_service import create_user as create_user_service
+from .services.auth_service import admin_required
 from .services.data_init import init_data
 from .blueprints import user_bp, auth_bp, workout_bp
 from .rabbitmq_service import setup_queues, WodRequestMessage
-import pika
-import json
-import os
+import pika, json, os, datetime
 
 app = Flask(__name__)
 
