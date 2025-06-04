@@ -5,14 +5,16 @@ from pydantic import ValidationError
 import requests
 import os
 import logging
+import json
 
 from .models_dto import MuscleGroupImpact, WodExerciseSchema, WodResponseSchema
+from .models_db import WodModel
 
 from .fitness_coach_service import calculate_intensity, request_wod
 
 from .fitness_service import get_exercises_by_muscle_group, get_all_exercises, get_exercise_by_id
 
-from .database import init_db
+from .database import init_db, db_session
 from .fitness_data_init import init_fitness_data
 
 # Configure Flask logging
@@ -105,6 +107,16 @@ def create_wod():
         
     except requests.RequestException as e:
         return jsonify({"error": f"Failed to fetch user history: {str(e)}"}), 500
+
+@app.route("/wod/<user_id>", methods=["GET"])
+def get_generated_wod(user_id):
+    db = db_session()
+    wod = db.query(WodModel).filter_by(user_id=user_id).order_by(WodModel.generated_at.desc()).first()
+    db.close()
+    if wod:
+        return jsonify({"user_id": user_id, "generated_at": wod.generated_at.isoformat(), "wod": json.loads(wod.wod)})
+    else:
+        return jsonify({"error": "No WOD found for user"}), 404
 
 def run_app():
     """Entry point for the application script"""

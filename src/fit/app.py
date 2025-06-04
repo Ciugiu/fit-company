@@ -8,6 +8,9 @@ from .models_db import UserModel
 from .services.user_service import create_user as create_user_service
 from .services.data_init import init_data
 from .blueprints import user_bp, auth_bp, workout_bp
+from .rabbitmq_service import setup_queues, WodRequestMessage
+import pika
+import json
 import os
 
 app = Flask(__name__)
@@ -52,6 +55,36 @@ def create_bootstrap_admin():
         return jsonify({"error": "Invalid admin data", "details": e.errors()}), 400
     except Exception as e:
         return jsonify({"error": "Error creating admin", "details": str(e)}), 500
+
+@app.route("/wod/jobs", methods=["POST"])
+@admin_required
+def create_wod_jobs_for_all_users():
+    setup_queues()
+
+    session = db_session()
+    users = session.query(UserModel).all()
+    connection = pika.BlockingConnection(
+        pika.ConnectionParameters(host="rabbitmq", credentials=pika.PlainCredentials("rabbit", "docker"))
+    )
+    channel = connection.channel()
+
+    for user in users:
+        msg = WodRequestMessage(
+            user_id=str(user.id),
+            requested_at=datetime.utcnow(),
+            parameters={},
+            difficulty=None,
+            goal=None
+        )
+        channel.basic_publish(
+            exchange='',
+            routing_key="createWodQueue",
+            body=msg.model_dump_json(),
+            properties=pika.BasicProperties(delivery_mode=2)
+        )
+
+    connection.close()
+    return {"status": "jobs created", "user_count": len(users)}, 201
 
 def run_app():
     """Entry point for the application script"""

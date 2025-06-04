@@ -1,8 +1,9 @@
 import os
 from typing import List, Tuple
+import json
 
 import requests
-from .models_db import ExerciseModel, MuscleGroupModel, exercise_muscle_groups
+from .models_db import ExerciseModel, MuscleGroupModel, exercise_muscle_groups, WodModel
 from .database import db_session
 import random
 from time import time
@@ -102,3 +103,15 @@ def request_wod(user_email: str) -> List[Tuple[ExerciseModel, List[Tuple[MuscleG
         return result
     finally:
         db.close()
+
+def generate_and_store_wod(user_id, requested_at):
+    wod_data = request_wod()
+    db = db_session()
+    wod = WodModel(
+        user_id=user_id,
+        generated_at=requested_at,
+        wod=json.dumps(wod_data)
+    )
+    db.add(wod)
+    db.commit()
+    db.close()
