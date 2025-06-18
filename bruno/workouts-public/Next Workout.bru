@@ -7,12 +7,9 @@ meta {
 get {
   url: {{endpoint}}/workouts
   body: none
-  auth: inherit
+  auth: bearer
 }
 
-script {
-  const workoutId = res.getBody().id;
-  if (workoutId) {
-    bru.setVar("workout-id", workoutId);
-  }
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqYW5lLmRvZUBtYWlsLmNvbSIsIm5hbWUiOiJKYW5lIERvZSIsInJvbGUiOiJhZG1pbiIsImlzcyI6ImZpdC1hcGkiLCJpYXQiOjE3NTAyNzg0OTEsImV4cCI6MTc1MDMwNzI5MX0.Xam_shEnaTkoz0OggrEbXQD0YblLFIVpUe0IsGvNhkw
 }

@@ -5,9 +5,13 @@ meta {
 }
 
 post {
-  url: {{endpoint}}/workouts/{{workout-id}}/perform
+  url: {{endpoint}}/workouts/1/perform
   body: json
-  auth: inherit
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqYW5lLmRvZUBtYWlsLmNvbSIsIm5hbWUiOiJKYW5lIERvZSIsInJvbGUiOiJhZG1pbiIsImlzcyI6ImZpdC1hcGkiLCJpYXQiOjE3NTAyNzg0OTEsImV4cCI6MTc1MDMwNzI5MX0.Xam_shEnaTkoz0OggrEbXQD0YblLFIVpUe0IsGvNhkw
 }
 
 body:json {
