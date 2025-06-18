@@ -15,6 +15,7 @@ def create_payment_route():
     """
     db = None
     try:
+        
         data = request.get_json()
         if not data or 'card' not in data:
             return jsonify({"error": "Card information is required"}), 400
