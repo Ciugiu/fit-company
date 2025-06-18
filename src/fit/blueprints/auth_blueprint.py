@@ -30,6 +30,7 @@ def login():
             "sub": user.email,
             "name": user.name,
             "role": user.role,
+            "premium": user.premium,
             "iss": "fit-api", 
             "iat": datetime.datetime.now(datetime.UTC), 
         }

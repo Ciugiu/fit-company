@@ -18,6 +18,9 @@ user_bp = Blueprint('user', __name__)
 
 BOOTSTRAP_KEY = os.environ.get("BOOTSTRAP_KEY", "bootstrap-secret-key")
 
+REGULAR_WORKOUT_EXERCISES = 5
+PREMIUM_WORKOUT_EXERCISES = 9
+
 @user_bp.route("/users", methods=["POST"])
 @admin_required
 def create_user():
@@ -69,7 +72,8 @@ def generate_wods():
         
         # Queue a WOD generation job for filtered users
         for user in users_needing_workout:
-            message = CreateWodMessage(email=user.email)
+            num_exercises = PREMIUM_WORKOUT_EXERCISES if user.premium else REGULAR_WORKOUT_EXERCISES
+            message = CreateWodMessage(email=user.email, num_exercises=num_exercises)
             rabbitmq_service.publish_message(message)
         
         current_app.logger.info(f"Successfully queued WOD generation for {len(users_needing_workout)} users")
