@@ -57,7 +57,7 @@ def get_next_workout_to_perform():
         if exercises is None:
             return jsonify({}), 200
         
-        return exercises.model_dump_json(), 200
+        return jsonify(exercises.model_dump()), 200
         
     except Exception as e:
-        return jsonify({"error": "Error retrieving unperformed workout", "details": str(e)}), 500 
+        return jsonify({"error": "Error retrieving unperformed workout", "details": str(e)}), 500
