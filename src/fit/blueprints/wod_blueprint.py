@@ -20,10 +20,8 @@ def update_wod(wod_id):
         if not data:
             return jsonify({"message": "No input data provided"}), 400
 
-        # Validate input data
         update_data = WodUpdateSchema.model_validate(data)
 
-        # Find the workout
         workout = db.query(WorkoutModel).filter(WorkoutModel.id == wod_id).first()
         if not workout:
             return jsonify({"message": f"WOD with id {wod_id} not found"}), 404

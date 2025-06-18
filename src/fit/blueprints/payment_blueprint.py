@@ -32,6 +32,7 @@ def create_payment_route():
             user = db.query(UserModel).filter(UserModel.email == g.user_email).first()
             if user:
                 user.role = "premium"
+                user.subscription_expires = db.func.now() + db.func.interval('1 month')
                 user.premium = True
                 db.commit()
 

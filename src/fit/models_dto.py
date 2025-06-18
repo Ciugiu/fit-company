@@ -8,10 +8,10 @@ class UserSchema(BaseModel):
     name: str
     role: str
     premium: bool = False
+
 class TokenSchema(BaseModel):
     access_token: str
     token_type: str
-
 
 class UserResponseSchema(UserSchema):
     password: str

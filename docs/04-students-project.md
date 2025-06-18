@@ -8,11 +8,11 @@ Following product marketing analysis, we identified the following features to ad
 
 - Billing service to allow users to pay for premium features
 - Here are some premium features (you can implement other features if you want):
-  - Premium workout plans: allows users to get 9 exercises per workout
+  + Premium workout plans: allows users to get 9 exercises per workout
   - Allow users to cancel their subscription
   - Persist exercise reps and weights
   - Announce when user reaches a new milestone (1000 pushups, 10000 steps, 100000 calories, etc.)
-  - Allow users to change their WOD (workout of the day)
+  + Allow users to change their WOD (workout of the day)
   - Add notifications to users when their subscription is about to expire
 
 You should add as many features as you can in the project, but add features one by one, the project should be running at all times.

@@ -24,7 +24,7 @@ def login():
         user = authenticate_user(login_schema.email, login_schema.password)
         if not user:
             return jsonify({"error": "Invalid credentials"}), 401
-        
+
         # Create access token with standard OAuth claims
         token_data = {
             "sub": user.email,

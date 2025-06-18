@@ -10,6 +10,7 @@ class UserModel(Base):
     email = Column(String, primary_key=True, index=True)
     name = Column(String, nullable=False)
     role = Column(String, nullable=False)
+    subscription_expires = Column(DateTime, nullable=True)
     password_hash = Column(String, nullable=False)
     
     # Profile information (nullable as they'll be filled during onboarding)
@@ -24,6 +25,20 @@ class UserModel(Base):
 
     def __repr__(self):
         return f"<User(email='{self.email}', name='{self.name}', role='{self.role}')>"
+
+class NotificationModel(Base):
+    __tablename__ = 'notifications'
+    
+    id = Column(Integer, primary_key=True)
+    user_email = Column(String, ForeignKey('users.email'), nullable=False)
+    message = Column(Text, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.datetime.utcnow)
+    
+    # Relationships
+    user = relationship("UserModel", back_populates="notifications")
+
+    def __repr__(self):
+        return f"<Notification(id={self.id}, user_email='{self.user_email}', message='{self.message}', created_at='{self.created_at}')>"
 
 class WorkoutModel(Base):
     __tablename__ = 'workouts'
