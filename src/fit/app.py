@@ -7,7 +7,7 @@ from .models_dto import UserSchema
 from .database import init_db, db_session
 from .models_db import UserModel
 from .services.user_service import create_user as create_user_service
-from .blueprints import user_bp, auth_bp, workout_bp, payment_bp
+from .blueprints import user_bp, auth_bp, workout_bp, payment_bp, wod_bp
 import os
 
 # Configure logging
@@ -30,6 +30,7 @@ app.register_blueprint(user_bp, url_prefix='/')
 app.register_blueprint(auth_bp, url_prefix='/')
 app.register_blueprint(workout_bp, url_prefix='/workouts')
 app.register_blueprint(payment_bp, url_prefix='/payment')
+app.register_blueprint(wod_bp)
 
 BOOTSTRAP_KEY = os.environ.get("BOOTSTRAP_KEY", "bootstrap-secret-key")
 

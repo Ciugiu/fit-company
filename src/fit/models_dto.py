@@ -115,3 +115,6 @@ class RegisterWorkoutSchema(BaseModel):
 class WorkoutExercisesList(BaseModel):
     workout_id: int
     exercises: List[int]
+
+class WodUpdateSchema(BaseModel):
+    exercises: List[int] = Field(..., description="List of new exercise IDs for the WOD")
