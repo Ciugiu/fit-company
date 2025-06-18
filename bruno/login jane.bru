@@ -7,7 +7,12 @@ meta {
 post {
   url: {{endpoint}}/oauth/token
   body: json
-  auth: inherit
+  auth: none
+}
+
+script {
+  const token = res.getBody().access_token;
+  bru.setVar("admin-token", token);
 }
 
 body:json {

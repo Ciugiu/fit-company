@@ -9,3 +9,10 @@ get {
   body: none
   auth: inherit
 }
+
+script {
+  const workoutId = res.getBody().id;
+  if (workoutId) {
+    bru.setVar("workout-id", workoutId);
+  }
+}

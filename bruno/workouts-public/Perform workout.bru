@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{endpoint}}/workouts/1/perform
+  url: {{endpoint}}/workouts/{{workout-id}}/perform
   body: json
   auth: inherit
 }
