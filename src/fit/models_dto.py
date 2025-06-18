@@ -7,6 +7,7 @@ class UserSchema(BaseModel):
     email: str
     name: str
     role: str
+    premium: bool = False
 class TokenSchema(BaseModel):
     access_token: str
     token_type: str
@@ -32,6 +33,7 @@ class UserProfileResponseSchema(BaseModel):
     height: Optional[float] = None
     fitness_goal: Optional[str] = None
     onboarded: Optional[str] = "false"
+    premium: bool = False
 
 class UserProfileUpdate(BaseModel):
     weight: Optional[float] = None
@@ -44,6 +46,7 @@ class User(UserSchema):
     height: Optional[float] = None
     fitness_goal: Optional[str] = None
     onboarded: str = "false"
+    premium: bool = False
 
 # Muscle Group DTOs
 class MuscleGroupBase(BaseModel):
