@@ -22,6 +22,7 @@ class UserModel(Base):
 
     # Relationships
     workouts = relationship("WorkoutModel", back_populates="user")
+    notifications = relationship("NotificationModel", back_populates="user")
 
     def __repr__(self):
         return f"<User(email='{self.email}', name='{self.name}', role='{self.role}')>"
